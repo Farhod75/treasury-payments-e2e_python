@@ -1,0 +1,21 @@
+- id: valid_admin
+  description: Valid admin login
+  username: admin
+  password: admin
+  expected_result: success
+  expected_landing: "/V1/index.php"    # adjust once you know DemoAutomation Bank URL after login
+  role: admin
+
+- id: invalid_password
+  description: Wrong password
+  username: admin
+  password: WrongP@ss
+  expected_result: error
+  expected_error_message: "Incorrect login credentials"
+
+- id: empty_credentials
+  description: Empty username and password
+  username: ""
+  password: ""
+  expected_result: error
+  expected_error_message: "Username and Password are required"

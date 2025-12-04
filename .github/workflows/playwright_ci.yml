@@ -1,0 +1,55 @@
+name: Playwright CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Test across different browsers
+        browser: [chromium, firefox, webkit]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x' # Use a compatible Python version
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Install Playwright browsers
+      run: playwright install ${{ matrix.browser }}
+
+    - name: Run Playwright tests
+      run: |
+        # Run tests in parallel using pytest-xdist
+        # -m "e2e and not flaky" runs only e2e tests that are not marked as flaky
+        # --browser=${{ matrix.browser }} specifies the browser for Playwright
+        # -n auto enables parallel execution based on CPU cores
+        # --output blob-report specifies the output for Playwright's HTML report
+        pytest -m "e2e and not flaky" --browser=${{ matrix.browser }} -n auto --output blob-report
+      env:
+        # Set BASE_URL for Parabank tests (or other environment variables)
+        BASE_URL: https://parabank.parasoft.com/parabank/index.htm
+        # Add any other environment variables your tests might need
+        # For example, for API tests: API_BASE_URL: https://api.example.com
+
+    - name: Upload Playwright report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report-${{ matrix.browser }}
+        path: blob-report/
+        retention-days: 30

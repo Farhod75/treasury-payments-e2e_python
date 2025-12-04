@@ -1,0 +1,35 @@
+- id: ach_valid_under_limit
+  description: Valid ACH payment below limit
+  customer_id: CUST001
+  debit_account: "10000001"
+  credit_account: "20000001"
+  amount: 500.00
+  currency: "USD"
+  daily_limit: 10000.00
+  expect_status: "Released"
+  expect_reject_reason: null
+  negative: false
+
+- id: ach_over_limit
+  description: ACH payment exceeding daily limit
+  customer_id: CUST001
+  debit_account: "10000001"
+  credit_account: "20000001"
+  amount: 15000.00
+  currency: "USD"
+  daily_limit: 10000.00
+  expect_status: "Rejected"
+  expect_reject_reason: "Daily limit exceeded"
+  negative: true
+
+- id: ach_invalid_routing
+  description: ACH with invalid routing/account
+  customer_id: CUST002
+  debit_account: "INVALID"
+  credit_account: "20000002"
+  amount: 100.00
+  currency: "USD"
+  daily_limit: 20000.00
+  expect_status: "Rejected"
+  expect_reject_reason: "Invalid account"
+  negative: true
