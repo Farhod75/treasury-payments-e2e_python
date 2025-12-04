@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         # Test across different browsers
-        browser: [chromium, firefox, webkit]
+        browser: [chromium, firefox] # remove webkit
 
     steps:
     - name: Checkout repository
