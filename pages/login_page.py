@@ -8,9 +8,10 @@ class LoginPage(BasePage):
     Provides entry to Bank Manager and Customer login flows.
     """
 
-    def __init__(self, page: Page, base_url: str):
+    def __init__(self, page: Page):
         super().__init__(page)
-        self.base_url = base_url
+        # No base_url arg; BasePage already set self.base_url
+        # keep your locators here
         # Buttons on the landing/login page
         self.manager_login_button = page.get_by_role("button", name="Bank Manager Login")
         self.customer_login_button = page.get_by_role("button", name="Customer Login")
