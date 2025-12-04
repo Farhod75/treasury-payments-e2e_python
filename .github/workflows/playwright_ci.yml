@@ -35,7 +35,7 @@ jobs:
 
     - name: Run Playwright tests
       run: |
-        pytest -m "e2e and not flaky" -n auto
+        pytest -m "e2e and not flaky" -n auto --output blob-report
         # Run tests in parallel using pytest-xdist
         # -m "e2e and not flaky" runs only e2e tests that are not marked as flaky
         # --browser=${{ matrix.browser }} specifies the browser for Playwright
